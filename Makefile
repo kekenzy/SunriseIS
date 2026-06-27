@@ -12,7 +12,24 @@ DB_CONTAINER=$(PROJECT_NAME)-db
 # ─────────────────────────────────────────
 # ローカル開発
 # ─────────────────────────────────────────
-up:
+preflight:
+	@echo "🔍 事前チェック開始..."
+	@if [ ! -f $(FRONTEND)/package-lock.json ]; then \
+		echo "⚠️  package-lock.json が見つかりません。npm install を実行します..."; \
+		cd $(FRONTEND) && npm install; \
+	else \
+		echo "✅ package-lock.json OK"; \
+	fi
+	@missing=$$(find $(BACKEND)/apps -maxdepth 3 -name "0001_initial.py" | wc -l | tr -d ' '); \
+	if [ "$$missing" -lt 5 ]; then \
+		echo "⚠️  マイグレーションファイルが不足しています ($$missing/5 app)。make makemigrations を先に実行してください"; \
+		exit 1; \
+	else \
+		echo "✅ マイグレーション OK ($$missing app 確認)"; \
+	fi
+	@echo "✅ 事前チェック完了"
+
+up: preflight
 	docker-compose up --build -d
 	@echo "起動完了"
 	@echo "  フロントエンド : http://localhost:5173"
@@ -125,7 +142,7 @@ lint: be-lint fe-lint
 
 audit: audit-be audit-fe
 
-.PHONY: up down restart logs be-logs fe-logs be-bash migrate makemigrations \
+.PHONY: preflight up down restart logs be-logs fe-logs be-bash migrate makemigrations \
 	createsuperuser collectstatic seed be-test be-lint audit-be \
 	fe-bash fe-install fe-build fe-lint fe-test audit-fe \
 	db-bash db-backup db-reset \

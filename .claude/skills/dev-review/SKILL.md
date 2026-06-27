@@ -61,6 +61,9 @@ git diff main...HEAD
 | セキュリティ | OWASP Top10・入力検証・秘密情報の扱い |
 | 設計整合 | 設計書との乖離がないか |
 | 可読性 | 命名・複雑度・コメントの適切さ |
+| マイグレーション | 新規appや変更したモデルの migrationファイルがコミットに含まれているか |
+| package-lock.json | frontend/package-lock.json がコミットに含まれているか（初回または依存追加時）|
+| container_name | docker-compose.yml の全サービスに `container_name: ${PROJECT_NAME}-<service>` が明示されているか（省略すると Makefile のコンテナ名と不一致になる）|
 
 出力上限：**指摘事項のみ、1件3行以内**
 

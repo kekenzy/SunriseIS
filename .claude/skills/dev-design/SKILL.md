@@ -60,3 +60,22 @@ RESTまたはGraphQLのエンドポイント一覧：
 - 設計の選択肢が複数ある場合は推奨案を1つ提示し、理由を添える
 - 「あとで変えられない決定」は特に明示してユーザーに確認を取る
 - Mermaid 記法でダイアグラムを積極的に使う
+
+## インフラ設計の注意点（Docker Compose）
+
+docker-compose.yml を設計・記述する際は以下を守る。
+
+### Dockerイメージはバージョン固定する
+`latest` タグは Docker Desktop のレイヤーDB破損等で pull 失敗するリスクがある。
+必ずバージョンを明示する。
+
+```yaml
+# NG
+image: dpage/pgadmin4:latest
+
+# OK
+image: dpage/pgadmin4:8.14
+```
+
+このルールはすべてのサービス（pgAdmin、Redis、Nginx等）に適用する。
+バージョンは設計時点で動作確認済みのものを記載し、理由をコメントで残すと望ましい。

@@ -80,3 +80,46 @@ chore: <設定・ツール変更>
 - 実装中に設計との齟齬を発見したら即座に報告する
 - 「とりあえず動く」より「正しく動く」を優先する
 - 1PRは1機能・1修正を原則とする
+
+## 実装時の必須チェック（このプロジェクト固有）
+
+### フロントエンド: package-lock.json をコミットに含める
+`npm install` 実行後に生成される `package-lock.json` がないと、
+Docker ビルド時の `npm ci` が失敗して起動できない。
+
+- `frontend/package-lock.json` が存在することを確認してからコミットする
+- `.gitignore` で除外されていないことを確認する
+
+### バックエンド: 全appのマイグレーションファイルを作成してコミットする
+新しい Django app を追加したら必ず `makemigrations` を実行してコミットする。
+マイグレーションファイルがない状態で起動すると、テーブルが存在せずエラーになる。
+
+```bash
+# コンテナ内で実行
+python manage.py makemigrations <app_name>
+
+# または全app一括
+python manage.py makemigrations
+```
+
+対象app（このプロジェクト）: accounts, notices, dashboard, billing, events
+各appの `migrations/0001_initial.py` がコミットに含まれていることを確認する。
+
+### docker-compose.yml: container_name を明示する
+`container_name` を省略すると Docker Compose が自動生成する名前（例: `sunriseis-backend-1`）になり、
+Makefile の `$(PROJECT_NAME)-backend`（例: `sunrise-is-backend`）と一致せず `make migrate` 等が失敗する。
+
+```yaml
+# NG: container_name なし → Docker が自動生成 → Makefile と不一致
+services:
+  backend:
+    build: ./backend
+
+# OK: Makefile の命名規則に合わせて明示
+services:
+  backend:
+    container_name: ${PROJECT_NAME}-backend
+    build: ./backend
+```
+
+全サービス（frontend / backend / db / pgadmin 等）に必ず設定する。

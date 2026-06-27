@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "home": "Home",
+    "payment": "Payments",
+    "attendance": "Attendance",
+    "notices": "Notices",
+    "events": "Events",
+    "submissions": "Submissions",
+    "students": "Students",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Login",
+    "parent": "Parent",
+    "admin": "Admin",
+    "email": "Email address",
+    "password": "Password",
+    "submit": "Login",
+    "error": "Invalid email or password"
+  },
+  "dashboard": {
+    "greeting": "Hello, {name}",
+    "nextPayment": "Next Payment",
+    "attendance": "This Month's Attendance",
+    "unreadNotices": "Unread Notices",
+    "upcomingEvents": "Upcoming Events",
+    "todaySchedule": "Today's Schedule",
+    "viewAll": "View All"
+  },
+  "notices": {
+    "title": "Notices",
+    "important": "Important",
+    "unread": "Unread",
+    "noNotices": "No notices available"
+  },
+  "admin": {
+    "title": "Admin Console",
+    "totalChildren": "Enrolled Students",
+    "presentToday": "Present Today",
+    "absentToday": "Absent Today",
+    "notRecorded": "Not Recorded",
+    "totalNotices": "Notices Sent",
+    "compose": "Send Notice",
+    "composeTitle": "Title (Japanese)",
+    "composeTitleEn": "Title (English)",
+    "composeBody": "Body (Japanese)",
+    "composeBodyEn": "Body (English)",
+    "important": "Important",
+    "target": "Audience",
+    "targetAll": "Everyone",
+    "targetParent": "Parents only",
+    "targetAdmin": "Admin / Staff only",
+    "send": "Send",
+    "history": "Notice History"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "days": "days",
+    "items": "items",
+    "persons": "students"
+  },
+  "public": {
+    "schoolName": "Sunrise International School",
+    "tagline": "Nurturing Global Minds Through International Education",
+    "about": "About",
+    "programs": "Programs",
+    "admissions": "Admissions",
+    "access": "Access",
+    "parentPortal": "Parent Portal",
+    "loginBtn": "Login"
+  }
+}

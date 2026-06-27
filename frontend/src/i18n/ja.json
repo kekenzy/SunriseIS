@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "payment": "お支払い",
+    "attendance": "登園・出欠",
+    "notices": "お知らせ",
+    "events": "イベント",
+    "submissions": "申請・書類",
+    "students": "園児管理",
+    "settings": "設定",
+    "logout": "ログアウト"
+  },
+  "login": {
+    "title": "ログイン",
+    "parent": "保護者",
+    "admin": "管理者",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "submit": "ログイン",
+    "error": "メールアドレスまたはパスワードが正しくありません"
+  },
+  "dashboard": {
+    "greeting": "こんにちは、{name}様",
+    "nextPayment": "次回お支払い",
+    "attendance": "今月の出席",
+    "unreadNotices": "未読のお知らせ",
+    "upcomingEvents": "直近イベント",
+    "todaySchedule": "今日の予定",
+    "viewAll": "すべて見る"
+  },
+  "notices": {
+    "title": "お知らせ",
+    "important": "重要",
+    "unread": "未読",
+    "noNotices": "お知らせはありません"
+  },
+  "admin": {
+    "title": "管理コンソール",
+    "totalChildren": "在籍園児",
+    "presentToday": "本日出席",
+    "absentToday": "本日欠席",
+    "notRecorded": "未登園",
+    "totalNotices": "配信済みお知らせ",
+    "compose": "お知らせを配信",
+    "composeTitle": "タイトル（日本語）",
+    "composeTitleEn": "タイトル（英語）",
+    "composeBody": "本文（日本語）",
+    "composeBodyEn": "本文（英語）",
+    "important": "重要",
+    "target": "配信対象",
+    "targetAll": "全員",
+    "targetParent": "保護者のみ",
+    "targetAdmin": "管理者・教職員のみ",
+    "send": "配信する",
+    "history": "配信履歴"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "back": "戻る",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "days": "日",
+    "items": "件",
+    "persons": "名"
+  },
+  "public": {
+    "schoolName": "Sunrise International School",
+    "tagline": "グローバルな視野を育む、インターナショナル教育",
+    "about": "スクールについて",
+    "programs": "プログラム",
+    "admissions": "入園案内",
+    "access": "アクセス",
+    "parentPortal": "保護者マイページ",
+    "loginBtn": "ログイン"
+  }
+}

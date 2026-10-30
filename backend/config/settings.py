@@ -8,6 +8,8 @@ if not SECRET_KEY:
     raise Exception('SECRET_KEY environment variable is not set')
 DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+# Django 管理画面（/admin/）は本番では既定で無効。必要なときだけ ADMIN_ENABLED=True で有効化する
+ADMIN_ENABLED = config('ADMIN_ENABLED', default=DEBUG, cast=bool)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -96,6 +98,21 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    # ScopedRateThrottle を付けたビューだけに効く。本番は nginx 1段なので X-Forwarded-For の末尾を
+    # クライアントIPとして扱う（先頭はクライアントが偽装できるため）
+    'NUM_PROXIES': config('NUM_PROXIES', default=1, cast=int),
+    'DEFAULT_THROTTLE_RATES': {
+        'login': '10/minute',
+    },
+}
+
+# レート制限・ログイン失敗回数を gunicorn の全ワーカーで共有するため DB キャッシュにする
+# （テーブルは manage.py createcachetable で作成）
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache',
+    },
 }
 
 from datetime import timedelta

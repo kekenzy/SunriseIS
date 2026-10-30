@@ -32,7 +32,7 @@ bash scripts/init_data.sh
 |---------|-----|
 | フロントエンド | http://localhost:5173 |
 | バックエンド API | http://localhost:8000/api/ |
-| Django 管理画面 | http://localhost:8000/admin/ |
+| Django 管理画面 | http://localhost:8000/admin/（ローカルのみ。本番は `ADMIN_ENABLED=True` のときだけ有効） |
 | pgAdmin | http://localhost:5050 |
 
 ### デモログイン

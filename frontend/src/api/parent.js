@@ -10,7 +10,6 @@ export const getEvents = () => api.get('/api/parent/events/')
 export const postRsvp = (eventId, status) =>
   api.post(`/api/parent/events/${eventId}/rsvp/`, { status })
 export const getBills = () => api.get('/api/parent/bills/')
-export const payBill = (id) => api.post(`/api/parent/bills/${id}/pay/`)
 export const getReceipt = (id) => api.get(`/api/parent/bills/${id}/receipt/`)
 export const postAbsence = (data) => api.post('/api/parent/absence/', data)
 export const getSubmissions = () => api.get('/api/parent/submissions/')

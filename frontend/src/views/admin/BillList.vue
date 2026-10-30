@@ -13,6 +13,7 @@
             <th class="pb-3 text-right">金額</th>
             <th class="pb-3 text-right">状況</th>
             <th class="pb-3">期日</th>
+            <th class="pb-3"></th>
           </tr>
         </thead>
         <tbody>
@@ -26,9 +27,17 @@
               </span>
             </td>
             <td class="py-3 text-sand/50">{{ bill.due_date ?? '-' }}</td>
+            <td class="py-3 text-right">
+              <button v-if="bill.status === 'unpaid'"
+                @click="handleMarkPaid(bill)"
+                :disabled="marking === bill.id"
+                class="btn-primary text-xs py-1 px-3">
+                {{ marking === bill.id ? '処理中…' : '入金確認' }}
+              </button>
+            </td>
           </tr>
           <tr v-if="!bills.length">
-            <td colspan="5" class="py-8 text-center text-sand/40">請求データがありません</td>
+            <td colspan="6" class="py-8 text-center text-sand/40">請求データがありません</td>
           </tr>
         </tbody>
       </table>
@@ -38,10 +47,23 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getAdminBills } from '@/api/admin'
+import { getAdminBills, markBillPaid } from '@/api/admin'
 
 const bills = ref([])
 const loading = ref(true)
+const marking = ref(null)
+
+async function handleMarkPaid(bill) {
+  if (!confirm(`${bill.month}「${bill.description_ja}」¥${bill.amount.toLocaleString()} を入金済みにしますか？領収書が発行されます。`)) return
+  marking.value = bill.id
+  try {
+    const { data } = await markBillPaid(bill.id)
+    const idx = bills.value.findIndex(b => b.id === bill.id)
+    if (idx !== -1) bills.value[idx] = data
+  } finally {
+    marking.value = null
+  }
+}
 
 onMounted(async () => {
   try {

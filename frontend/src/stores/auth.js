@@ -27,7 +27,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     try {
-      if (refreshToken.value) await apiLogout(refreshToken.value)
+      // refresh はローテーションで api/index.js 側が更新するので、最新の値を localStorage から読む
+      const refresh = localStorage.getItem('refresh_token')
+      if (refresh) await apiLogout(refresh)
     } finally {
       user.value = null
       accessToken.value = null

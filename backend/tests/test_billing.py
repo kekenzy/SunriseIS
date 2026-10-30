@@ -44,19 +44,28 @@ class BillingTestCase(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(len(res.data), 2)
 
-    def test_pay_bill(self):
-        self.client.force_authenticate(user=self.parent_user)
-        res = self.client.post(reverse('parent-bill-pay', args=[self.unpaid_bill.id]))
+    def test_admin_mark_paid(self):
+        self.client.force_authenticate(user=self.admin_user)
+        res = self.client.post(reverse('admin-bill-mark-paid', args=[self.unpaid_bill.id]))
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.data['status'], 'paid')
         self.unpaid_bill.refresh_from_db()
         self.assertEqual(self.unpaid_bill.status, 'paid')
         self.assertTrue(Receipt.objects.filter(bill=self.unpaid_bill).exists())
 
-    def test_cannot_pay_already_paid(self):
-        self.client.force_authenticate(user=self.parent_user)
-        res = self.client.post(reverse('parent-bill-pay', args=[self.paid_bill.id]))
+    def test_cannot_mark_paid_already_paid(self):
+        self.client.force_authenticate(user=self.admin_user)
+        res = self.client.post(reverse('admin-bill-mark-paid', args=[self.paid_bill.id]))
         self.assertEqual(res.status_code, 404)
+
+    def test_parent_cannot_mark_paid(self):
+        self.client.force_authenticate(user=self.parent_user)
+        res = self.client.post(reverse('admin-bill-mark-paid', args=[self.unpaid_bill.id]))
+        self.assertEqual(res.status_code, 403)
+        res = self.client.post(f'/api/parent/bills/{self.unpaid_bill.id}/pay/')
+        self.assertEqual(res.status_code, 404)
+        self.unpaid_bill.refresh_from_db()
+        self.assertEqual(self.unpaid_bill.status, 'unpaid')
 
     def test_receipt_available_after_payment(self):
         self.client.force_authenticate(user=self.parent_user)

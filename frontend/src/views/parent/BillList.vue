@@ -34,13 +34,7 @@
                 </span>
               </td>
               <td class="py-3 text-right">
-                <button v-if="bill.status === 'unpaid'"
-                  @click="handlePay(bill)"
-                  :disabled="paying === bill.id"
-                  class="btn-primary text-xs py-1 px-3">
-                  {{ paying === bill.id ? '処理中…' : '支払う' }}
-                </button>
-                <span v-else-if="bill.has_receipt" class="text-teal-600/60 text-xs">領収書 ✓</span>
+                <span v-if="bill.status === 'paid' && bill.has_receipt" class="text-teal-600/60 text-xs">領収書 ✓</span>
               </td>
             </tr>
           </tbody>
@@ -50,7 +44,7 @@
       <!-- お支払い方法 -->
       <div class="card mt-4">
         <p class="text-sand/60 text-sm mb-2">お支払い方法</p>
-        <p class="text-sand text-sm">💳 クレジットカード •••• 4218</p>
+        <p class="text-sand text-sm">教室からのご案内に沿ってお支払いください。入金を確認すると「支払済」になり、領収書が発行されます。</p>
       </div>
     </template>
   </div>
@@ -58,11 +52,10 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { getBills, payBill } from '@/api/parent'
+import { getBills } from '@/api/parent'
 
 const bills = ref([])
 const loading = ref(true)
-const paying = ref(null)
 
 const unpaidTotal = computed(() =>
   bills.value.filter(b => b.status === 'unpaid').reduce((sum, b) => sum + b.amount, 0)
@@ -71,17 +64,6 @@ const unpaidTotal = computed(() =>
 async function load() {
   const { data } = await getBills()
   bills.value = data
-}
-
-async function handlePay(bill) {
-  paying.value = bill.id
-  try {
-    const { data } = await payBill(bill.id)
-    const idx = bills.value.findIndex(b => b.id === bill.id)
-    if (idx !== -1) bills.value[idx] = data
-  } finally {
-    paying.value = null
-  }
 }
 
 onMounted(async () => {
